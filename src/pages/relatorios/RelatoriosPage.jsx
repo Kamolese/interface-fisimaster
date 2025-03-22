@@ -41,13 +41,15 @@ function RelatoriosPage() {
     setLoading(true);
     try {
       const { startDate, endDate } = dateRange;
+      console.log('Fazendo requisição para:', `${axios.defaults.baseURL}/relatorios?startDate=${startDate}&endDate=${endDate}`);
       const res = await axios.get(
-        `/api/relatorios?startDate=${startDate}&endDate=${endDate}`,
+        `/relatorios?startDate=${startDate}&endDate=${endDate}`,
         getConfig()
       );
+      console.log('Resposta recebida:', res.data);
       setRelatorioData(res.data);
     } catch (error) {
-      console.error('Error fetching relatorio data:', error);
+      console.error('Error fetching relatorio data:', error.response || error);
       toast.error('Erro ao carregar dados do relatório');
     } finally {
       setLoading(false);
@@ -107,7 +109,7 @@ function RelatoriosPage() {
     try {
       const { startDate, endDate } = dateRange;
       const response = await axios.post(
-        `/api/relatorios/email?startDate=${startDate}&endDate=${endDate}`,
+        `/relatorios/email?startDate=${startDate}&endDate=${endDate}`,
         { email: emailAddress },
         getConfig()
       );
