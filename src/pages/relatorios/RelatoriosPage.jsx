@@ -41,9 +41,9 @@ function RelatoriosPage() {
     setLoading(true);
     try {
       const { startDate, endDate } = dateRange;
-      console.log('Fazendo requisição para:', `${axios.defaults.baseURL}/relatorios?startDate=${startDate}&endDate=${endDate}`);
+      console.log('Fazendo requisição para:', `${axios.defaults.baseURL}/api/relatorios?startDate=${startDate}&endDate=${endDate}`);
       const res = await axios.get(
-        `/relatorios?startDate=${startDate}&endDate=${endDate}`,
+        `/api/relatorios?startDate=${startDate}&endDate=${endDate}`,
         getConfig()
       );
       console.log('Resposta recebida:', res.data);
@@ -109,7 +109,7 @@ function RelatoriosPage() {
     try {
       const { startDate, endDate } = dateRange;
       const response = await axios.post(
-        `/relatorios/email?startDate=${startDate}&endDate=${endDate}`,
+        `/api/relatorios/email?startDate=${startDate}&endDate=${endDate}`,
         { email: emailAddress },
         getConfig()
       );
