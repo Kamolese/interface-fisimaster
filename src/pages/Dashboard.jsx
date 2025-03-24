@@ -59,7 +59,7 @@ function Dashboard() {
         let hasError = false;
 
         try {
-          const pacientesRes = await axios.get('/api/pacientes', getConfig());
+          const pacientesRes = await axios.get('/pacientes', getConfig());
           pacientesData = pacientesRes.data;
         } catch (error) {
           console.error('Error fetching pacientes:', error);
@@ -67,7 +67,7 @@ function Dashboard() {
         }
 
         try {
-          const procedimentosRes = await axios.get('/api/procedimentos', getConfig());
+          const procedimentosRes = await axios.get('/procedimentos', getConfig());
           procedimentosData = procedimentosRes.data;
         } catch (error) {
           console.error('Error fetching procedimentos:', error);
@@ -82,7 +82,7 @@ function Dashboard() {
           const startDate = firstDayOfMonth.toISOString().split('T')[0];
           const endDate = lastDayOfMonth.toISOString().split('T')[0];
           const relatorioRes = await axios.get(
-            `/api/relatorios?startDate=${startDate}&endDate=${endDate}`,
+            `/relatorios?startDate=${startDate}&endDate=${endDate}`,
             getConfig()
           );
           relatorioData = relatorioRes.data;
