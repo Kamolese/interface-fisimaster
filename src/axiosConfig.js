@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Garantir que a URL da API está definida corretamente
-const apiUrl = import.meta.env.VITE_API_URL || 'https://api-fisimaster.onrender.com/api';
+const apiUrl = import.meta.env.VITE_API_URL || 'https://api-fisimaster.onrender.com';
 console.log('Configurando axios com URL:', apiUrl);
 axios.defaults.baseURL = apiUrl;
 
