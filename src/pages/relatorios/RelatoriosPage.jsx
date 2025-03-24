@@ -20,6 +20,7 @@ function RelatoriosPage() {
   const [sendingEmail, setSendingEmail] = useState(false);
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [emailAddress, setEmailAddress] = useState('');
+  const [emailType, setEmailType] = useState('completo');
   const [relatorioData, setRelatorioData] = useState({
     totalProcedimentos: 0,
     producao: 0,
@@ -93,6 +94,7 @@ function RelatoriosPage() {
   const handleCloseEmailModal = () => {
     setShowEmailModal(false);
     setEmailAddress('');
+    setEmailType('completo');
   };
 
   const handleEmailChange = (e) => {
@@ -108,8 +110,16 @@ function RelatoriosPage() {
     setSendingEmail(true);
     try {
       const { startDate, endDate } = dateRange;
+      let endpoint = '/relatorios/email';
+      
+      if (emailType === 'particular') {
+        endpoint = '/relatorios/email/particular';
+      } else if (emailType === 'plano-saude') {
+        endpoint = '/relatorios/email/plano-saude';
+      }
+      
       const response = await axios.post(
-        `/relatorios/email?startDate=${startDate}&endDate=${endDate}`,
+        `${endpoint}?startDate=${startDate}&endDate=${endDate}`,
         { email: emailAddress },
         getConfig()
       );
@@ -262,6 +272,41 @@ function RelatoriosPage() {
                 <Form.Text className="text-muted">
                   O relatório será enviado para este endereço de email.
                 </Form.Text>
+              </Form.Group>
+              
+              <Form.Group className="mb-3">
+                <Form.Label>Tipo de Relatório</Form.Label>
+                <div>
+                  <Form.Check
+                    type="radio"
+                    label="Relatório Completo"
+                    name="emailType"
+                    id="emailTypeCompleto"
+                    value="completo"
+                    checked={emailType === 'completo'}
+                    onChange={() => setEmailType('completo')}
+                    className="mb-2"
+                  />
+                  <Form.Check
+                    type="radio"
+                    label="Somente Pacientes Particulares"
+                    name="emailType"
+                    id="emailTypeParticular"
+                    value="particular"
+                    checked={emailType === 'particular'}
+                    onChange={() => setEmailType('particular')}
+                    className="mb-2"
+                  />
+                  <Form.Check
+                    type="radio"
+                    label="Somente Planos de Saúde"
+                    name="emailType"
+                    id="emailTypePlanoSaude"
+                    value="plano-saude"
+                    checked={emailType === 'plano-saude'}
+                    onChange={() => setEmailType('plano-saude')}
+                  />
+                </div>
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
