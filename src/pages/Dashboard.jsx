@@ -46,6 +46,8 @@ function Dashboard() {
     totalParticular: 0,
     totalPlanoSaude: 0,
     evolucoesGeradas: 0,
+    evolucoesGeradasParticular: 0,
+    evolucoesGeradasPlanoSaude: 0,
     pacientesAtendidos: 0,
   });
   const [loading, setLoading] = useState(true);
@@ -268,6 +270,54 @@ function Dashboard() {
             <FaMoneyBillWave size={30} className="mb-3 text-primary" />
             <h3>Produção Planos</h3>
             <p>{formatCurrency(relatorioData.producaoPlanoSaude)}</p>
+            <Button 
+              variant="outline-primary" 
+              size="sm" 
+              className="mt-3" 
+              onClick={() => navigate('/relatorios')}
+            >
+              Ver Detalhes
+            </Button>
+          </Card.Body>
+        </Card>
+
+        <Card className="stat-card">
+          <Card.Body>
+            <FaFileAlt size={30} className="mb-3 text-info" />
+            <h3>Evoluções Geradas</h3>
+            <p>{relatorioData.evolucoesGeradas}</p>
+            <Button 
+              variant="outline-info" 
+              size="sm" 
+              className="mt-3" 
+              onClick={() => navigate('/relatorios')}
+            >
+              Ver Detalhes
+            </Button>
+          </Card.Body>
+        </Card>
+
+        <Card className="stat-card">
+          <Card.Body>
+            <FaFileAlt size={30} className="mb-3 text-success" />
+            <h3>Evoluções Particular</h3>
+            <p>{relatorioData.evolucoesGeradasParticular}</p>
+            <Button 
+              variant="outline-success" 
+              size="sm" 
+              className="mt-3" 
+              onClick={() => navigate('/relatorios')}
+            >
+              Ver Detalhes
+            </Button>
+          </Card.Body>
+        </Card>
+
+        <Card className="stat-card">
+          <Card.Body>
+            <FaFileAlt size={30} className="mb-3 text-primary" />
+            <h3>Evoluções Planos</h3>
+            <p>{relatorioData.evolucoesGeradasPlanoSaude}</p>
             <Button 
               variant="outline-primary" 
               size="sm" 

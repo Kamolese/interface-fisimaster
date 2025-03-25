@@ -29,6 +29,8 @@ function RelatoriosPage() {
     totalParticular: 0,
     totalPlanoSaude: 0,
     evolucoesGeradas: 0,
+    evolucoesGeradasParticular: 0,
+    evolucoesGeradasPlanoSaude: 0,
     pacientesAtendidos: 0,
     periodoInicio: null,
     periodoFim: null,
@@ -239,6 +241,26 @@ function RelatoriosPage() {
                   <FaFileAlt size={40} className="mb-3 text-info" />
                   <h3>Evoluções Geradas</h3>
                   <h2 className="mt-3">{relatorioData.evolucoesGeradas}</h2>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            <Col md={6} lg={3} className="mb-4">
+              <Card className="h-100 stat-card">
+                <Card.Body className="text-center">
+                  <FaFileAlt size={40} className="mb-3 text-success" />
+                  <h3>Evoluções Particular</h3>
+                  <h2 className="mt-3">{relatorioData.evolucoesGeradasParticular}</h2>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            <Col md={6} lg={3} className="mb-4">
+              <Card className="h-100 stat-card">
+                <Card.Body className="text-center">
+                  <FaFileAlt size={40} className="mb-3 text-primary" />
+                  <h3>Evoluções Planos</h3>
+                  <h2 className="mt-3">{relatorioData.evolucoesGeradasPlanoSaude}</h2>
                 </Card.Body>
               </Card>
             </Col>
