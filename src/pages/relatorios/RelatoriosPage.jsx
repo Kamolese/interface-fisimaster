@@ -202,10 +202,9 @@ function RelatoriosPage() {
             </Button>
           </div>
 
+          <h3 className="section-title mb-3">Visão Geral</h3>
           <Row className="mb-4">
-
-
-            <Col md={6} lg={3} className="mb-4">
+            <Col md={6} lg={4} className="mb-4">
               <Card className="h-100 stat-card">
                 <Card.Body className="text-center">
                   <FaMoneyBillWave size={40} className="mb-3 text-warning" />
@@ -214,28 +213,8 @@ function RelatoriosPage() {
                 </Card.Body>
               </Card>
             </Col>
-            
-            <Col md={6} lg={3} className="mb-4">
-              <Card className="h-100 stat-card">
-                <Card.Body className="text-center">
-                  <FaMoneyBillWave size={40} className="mb-3 text-success" />
-                  <h3>Produção Particular</h3>
-                  <h2 className="mt-3">{formatCurrency(relatorioData.producaoParticular)}</h2>
-                </Card.Body>
-              </Card>
-            </Col>
-            
-            <Col md={6} lg={3} className="mb-4">
-              <Card className="h-100 stat-card">
-                <Card.Body className="text-center">
-                  <FaMoneyBillWave size={40} className="mb-3 text-primary" />
-                  <h3>Produção Planos</h3>
-                  <h2 className="mt-3">{formatCurrency(relatorioData.producaoPlanoSaude)}</h2>
-                </Card.Body>
-              </Card>
-            </Col>
 
-            <Col md={6} lg={3} className="mb-4">
+            <Col md={6} lg={4} className="mb-4">
               <Card className="h-100 stat-card">
                 <Card.Body className="text-center">
                   <FaFileAlt size={40} className="mb-3 text-info" />
@@ -245,7 +224,30 @@ function RelatoriosPage() {
               </Card>
             </Col>
 
-            <Col md={6} lg={3} className="mb-4">
+            <Col md={6} lg={4} className="mb-4">
+              <Card className="h-100 stat-card">
+                <Card.Body className="text-center">
+                  <FaUserInjured size={40} className="mb-3 text-warning" />
+                  <h3>Pacientes Atendidos</h3>
+                  <h2 className="mt-3">{relatorioData.pacientesAtendidos}</h2>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          <h3 className="section-title mb-3">Pacientes Particulares</h3>
+          <Row className="mb-4">
+            <Col md={6} lg={6} className="mb-4">
+              <Card className="h-100 stat-card">
+                <Card.Body className="text-center">
+                  <FaMoneyBillWave size={40} className="mb-3 text-success" />
+                  <h3>Produção Particular</h3>
+                  <h2 className="mt-3">{formatCurrency(relatorioData.producaoParticular)}</h2>
+                </Card.Body>
+              </Card>
+            </Col>
+            
+            <Col md={6} lg={6} className="mb-4">
               <Card className="h-100 stat-card">
                 <Card.Body className="text-center">
                   <FaFileAlt size={40} className="mb-3 text-success" />
@@ -254,23 +256,26 @@ function RelatoriosPage() {
                 </Card.Body>
               </Card>
             </Col>
+          </Row>
 
-            <Col md={6} lg={3} className="mb-4">
+          <h3 className="section-title mb-3">Pacientes de Planos de Saúde</h3>
+          <Row className="mb-4">
+            <Col md={6} lg={6} className="mb-4">
+              <Card className="h-100 stat-card">
+                <Card.Body className="text-center">
+                  <FaMoneyBillWave size={40} className="mb-3 text-primary" />
+                  <h3>Produção Planos</h3>
+                  <h2 className="mt-3">{formatCurrency(relatorioData.producaoPlanoSaude)}</h2>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            <Col md={6} lg={6} className="mb-4">
               <Card className="h-100 stat-card">
                 <Card.Body className="text-center">
                   <FaFileAlt size={40} className="mb-3 text-primary" />
                   <h3>Evoluções Planos</h3>
                   <h2 className="mt-3">{relatorioData.evolucoesGeradasPlanoSaude}</h2>
-                </Card.Body>
-              </Card>
-            </Col>
-
-            <Col md={6} lg={3} className="mb-4">
-              <Card className="h-100 stat-card">
-                <Card.Body className="text-center">
-                  <FaUserInjured size={40} className="mb-3 text-warning" />
-                  <h3>Pacientes Atendidos</h3>
-                  <h2 className="mt-3">{relatorioData.pacientesAtendidos}</h2>
                 </Card.Body>
               </Card>
             </Col>

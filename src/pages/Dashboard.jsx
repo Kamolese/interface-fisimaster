@@ -182,11 +182,12 @@ function Dashboard() {
       <h1 className="page-header">Dashboard</h1>
       <p className="mb-4">Bem-vindo(a), {user?.name}! Aqui está um resumo da sua atividade.</p>
 
+      <h2 className="section-title mb-3">Visão Geral</h2>
       <div className="dashboard-stats">
         <Card className="stat-card">
           <Card.Body>
             <FaUserInjured size={30} className="mb-3 text-primary" />
-            <h3>Pacientes</h3>
+            <h3>Total de Pacientes</h3>
             <p>{stats.totalPacientes}</p>
             <Button 
               variant="outline-primary" 
@@ -203,38 +204,6 @@ function Dashboard() {
 
         <Card className="stat-card">
           <Card.Body>
-            <FaNotesMedical size={30} className="mb-3 text-info" />
-            <h3>Procedimentos Particulares</h3>
-            <p>{relatorioData.totalParticular}</p>
-            <Button 
-              variant="outline-info" 
-              size="sm" 
-              className="mt-3" 
-              onClick={() => navigate('/procedimentos')}
-            >
-              Ver Detalhes
-            </Button>
-          </Card.Body>
-        </Card>
-
-        <Card className="stat-card">
-          <Card.Body>
-            <FaNotesMedical size={30} className="mb-3 text-primary" />
-            <h3>Procedimentos Planos</h3>
-            <p>{relatorioData.totalPlanoSaude}</p>
-            <Button 
-              variant="outline-primary" 
-              size="sm" 
-              className="mt-3" 
-              onClick={() => navigate('/procedimentos')}
-            >
-              Ver Detalhes
-            </Button>
-          </Card.Body>
-        </Card>
-
-        <Card className="stat-card">
-          <Card.Body>
             <FaMoneyBillWave size={30} className="mb-3 text-warning" />
             <h3>Produção Total</h3>
             <p>{formatCurrency(relatorioData.producaoParticular + relatorioData.producaoPlanoSaude)}</p>
@@ -248,11 +217,30 @@ function Dashboard() {
             </Button>
           </Card.Body>
         </Card>
+      </div>
+
+      <h2 className="section-title mb-3 mt-4">Pacientes Particulares</h2>
+      <div className="dashboard-stats">
+        <Card className="stat-card">
+          <Card.Body>
+            <FaNotesMedical size={30} className="mb-3 text-success" />
+            <h3>Procedimentos</h3>
+            <p>{relatorioData.totalParticular}</p>
+            <Button 
+              variant="outline-success" 
+              size="sm" 
+              className="mt-3" 
+              onClick={() => navigate('/procedimentos')}
+            >
+              Ver Detalhes
+            </Button>
+          </Card.Body>
+        </Card>
 
         <Card className="stat-card">
           <Card.Body>
             <FaMoneyBillWave size={30} className="mb-3 text-success" />
-            <h3>Produção Particular</h3>
+            <h3>Produção</h3>
             <p>{formatCurrency(relatorioData.producaoParticular)}</p>
             <Button 
               variant="outline-success" 
@@ -267,8 +255,43 @@ function Dashboard() {
 
         <Card className="stat-card">
           <Card.Body>
+            <FaFileAlt size={30} className="mb-3 text-success" />
+            <h3>Evoluções</h3>
+            <p>{relatorioData.evolucoesGeradasParticular}</p>
+            <Button 
+              variant="outline-success" 
+              size="sm" 
+              className="mt-3" 
+              onClick={() => navigate('/relatorios')}
+            >
+              Ver Detalhes
+            </Button>
+          </Card.Body>
+        </Card>
+      </div>
+
+      <h2 className="section-title mb-3 mt-4">Pacientes de Planos de Saúde</h2>
+      <div className="dashboard-stats">
+        <Card className="stat-card">
+          <Card.Body>
+            <FaNotesMedical size={30} className="mb-3 text-primary" />
+            <h3>Procedimentos</h3>
+            <p>{relatorioData.totalPlanoSaude}</p>
+            <Button 
+              variant="outline-primary" 
+              size="sm" 
+              className="mt-3" 
+              onClick={() => navigate('/procedimentos')}
+            >
+              Ver Detalhes
+            </Button>
+          </Card.Body>
+        </Card>
+
+        <Card className="stat-card">
+          <Card.Body>
             <FaMoneyBillWave size={30} className="mb-3 text-primary" />
-            <h3>Produção Planos</h3>
+            <h3>Produção</h3>
             <p>{formatCurrency(relatorioData.producaoPlanoSaude)}</p>
             <Button 
               variant="outline-primary" 
@@ -283,40 +306,8 @@ function Dashboard() {
 
         <Card className="stat-card">
           <Card.Body>
-            <FaFileAlt size={30} className="mb-3 text-info" />
-            <h3>Evoluções Geradas</h3>
-            <p>{relatorioData.evolucoesGeradas}</p>
-            <Button 
-              variant="outline-info" 
-              size="sm" 
-              className="mt-3" 
-              onClick={() => navigate('/relatorios')}
-            >
-              Ver Detalhes
-            </Button>
-          </Card.Body>
-        </Card>
-
-        <Card className="stat-card">
-          <Card.Body>
-            <FaFileAlt size={30} className="mb-3 text-success" />
-            <h3>Evoluções Particular</h3>
-            <p>{relatorioData.evolucoesGeradasParticular}</p>
-            <Button 
-              variant="outline-success" 
-              size="sm" 
-              className="mt-3" 
-              onClick={() => navigate('/relatorios')}
-            >
-              Ver Detalhes
-            </Button>
-          </Card.Body>
-        </Card>
-
-        <Card className="stat-card">
-          <Card.Body>
             <FaFileAlt size={30} className="mb-3 text-primary" />
-            <h3>Evoluções Planos</h3>
+            <h3>Evoluções</h3>
             <p>{relatorioData.evolucoesGeradasPlanoSaude}</p>
             <Button 
               variant="outline-primary" 
