@@ -120,7 +120,7 @@ function ProcedimentoForm() {
     };
 
     if (id) {
-      dispatch(updateProcedimento({ procedimentoId: id, procedimentoData }));
+      dispatch(updateProcedimento({ id, procedimentoData }));
       toast.success('Procedimento atualizado com sucesso!');
     } else {
       dispatch(createProcedimento(procedimentoData));

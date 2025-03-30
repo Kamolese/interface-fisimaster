@@ -70,6 +70,11 @@ function App() {
                   <ProcedimentoDetail />
                 </PrivateRoute>
               } />
+              <Route path="/procedimentos/editar/:id" element={
+                <PrivateRoute>
+                  <ProcedimentoForm />
+                </PrivateRoute>
+              } />
             
               <Route path="/relatorios" element={
                 <PrivateRoute>

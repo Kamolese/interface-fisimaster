@@ -72,7 +72,7 @@ function PacienteForm() {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (!nome || !telefone || !planoSaude) {
+    if (!nome || !planoSaude) {
       toast.error('Por favor preencha os campos obrigatórios');
       return;
     }
@@ -155,14 +155,13 @@ function PacienteForm() {
             <Row>
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label>Telefone*</Form.Label>
+                  <Form.Label>Telefone</Form.Label>
                   <Form.Control
                     type="tel"
                     name="telefone"
                     value={telefone}
                     onChange={onChange}
                     placeholder="(00) 00000-0000"
-                    required
                   />
                 </Form.Group>
               </Col>
@@ -202,9 +201,8 @@ function PacienteForm() {
                     required
                   >
                     <option value="SUS">SUS</option>
-                    <option value="Unimed">Unimed</option>
-                    <option value="Bradesco">Bradesco</option>
-                    <option value="Amil">Amil</option>
+                    <option value="Iamspe">Iamspe</option>
+                    <option value="Unimed">Unimed</option>         
                     <option value="Particular">Particular</option>
                     <option value="Outros">Outros</option>
                   </Form.Select>

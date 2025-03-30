@@ -34,8 +34,14 @@ function ProcedimentosList() {
   }, [user, navigate, isError, message, dispatch]);
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return format(date, 'dd/MM/yyyy', { locale: ptBR });
+    const dateParts = new Date(dateString).toISOString().split('T')[0].split('-');
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]) - 1;
+    const day = parseInt(dateParts[2]);
+    
+    const localDate = new Date(year, month, day, 12, 0, 0);
+    
+    return format(localDate, 'dd/MM/yyyy', { locale: ptBR });
   };
 
   const handleFiltroChange = (e) => {
