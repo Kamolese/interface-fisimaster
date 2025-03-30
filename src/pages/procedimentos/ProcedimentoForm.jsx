@@ -149,20 +149,18 @@ function ProcedimentoForm() {
         value: p._id,
         label: p.nome
       }));
-      setFilteredPacientes(pacientesOptions);      
       
-      if (paciente && !pacientesOptions.some(option => option.value === paciente)) {
+      if (paciente) {
         const selectedPaciente = pacientes.find(p => p._id === paciente);
-        if (selectedPaciente) {
-          setFilteredPacientes(prev => [
-            ...prev,
-            { value: selectedPaciente._id, label: selectedPaciente.nome }
-          ]);
+        if (selectedPaciente && !pacientesOptions.some(option => option.value === paciente)) {
+          pacientesOptions.push({ value: selectedPaciente._id, label: selectedPaciente.nome });
         }
       }
+      
+      setFilteredPacientes(pacientesOptions);
     }
   }, [pacientes, paciente]);
-  
+
   useEffect(() => {
     if (pacienteIdFromQuery && pacientes && pacientes.length > 0) {
       const selectedPaciente = pacientes.find(p => p._id === pacienteIdFromQuery);
@@ -176,17 +174,18 @@ function ProcedimentoForm() {
   }, [pacienteIdFromQuery, pacientes]);
 
   const handlePacienteChange = (selectedOption) => {
-
+    const pacienteValue = selectedOption ? selectedOption.value : '';
+    
     setFormData({
       ...formData,
-      paciente: selectedOption ? selectedOption.value : ''
+      paciente: pacienteValue
     });
   };
   
   const selectedPacienteOption = filteredPacientes.find(option => option.value === paciente) || null;
   
   useEffect(() => {
-    if (pacienteIdFromQuery && !paciente && pacientes && pacientes.length > 0) {
+    if (pacienteIdFromQuery && pacientes && pacientes.length > 0) {
       const selectedPaciente = pacientes.find(p => p._id === pacienteIdFromQuery);
       if (selectedPaciente) {
         setFormData(prev => ({
@@ -195,7 +194,7 @@ function ProcedimentoForm() {
         }));
       }
     }
-  }, [pacienteIdFromQuery, paciente, pacientes]);
+  }, [pacienteIdFromQuery, pacientes]);
 
   return (
     <Container>
