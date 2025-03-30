@@ -134,15 +134,6 @@ function ProcedimentoForm() {
     navigate('/procedimentos');
   };
 
-  if (procedimentoLoading || pacientesLoading) {
-    return (
-      <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
-        <FaSpinner className="spinner-border" role="status" />
-        <span className="sr-only ms-2">Carregando...</span>
-      </div>
-    );
-  }
-
   useEffect(() => {
     if (pacientes && pacientes.length > 0) {
       const pacientesOptions = pacientes.map(p => ({
@@ -172,6 +163,15 @@ function ProcedimentoForm() {
       }
     }
   }, [pacienteIdFromQuery, pacientes]);
+  
+  if (procedimentoLoading || pacientesLoading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
+        <FaSpinner className="spinner-border" role="status" />
+        <span className="sr-only ms-2">Carregando...</span>
+      </div>
+    );
+  }
 
   const handlePacienteChange = (selectedOption) => {
     const pacienteValue = selectedOption ? selectedOption.value : '';
