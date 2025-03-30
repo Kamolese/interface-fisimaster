@@ -3,9 +3,10 @@ import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { createProcedimento, getProcedimento, updateProcedimento, reset } from '../../features/procedimentos/procedimentoSlice';
 import { getPacientes } from '../../features/pacientes/pacienteSlice';
-import { FaNotesMedical, FaArrowLeft, FaSpinner } from 'react-icons/fa';
-import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import { FaNotesMedical, FaArrowLeft, FaSpinner, FaSearch } from 'react-icons/fa';
+import { Container, Row, Col, Form, Button, Card, InputGroup } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import Select from 'react-select';
 
 function ProcedimentoForm() {
   const { id } = useParams();
@@ -139,6 +140,25 @@ function ProcedimentoForm() {
     );
   }
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredPacientes, setFilteredPacientes] = useState([]);
+
+  useEffect(() => {
+    if (pacientes && pacientes.length > 0) {
+      setFilteredPacientes(pacientes.map(p => ({
+        value: p._id,
+        label: p.nome
+      })));
+    }
+  }, [pacientes]);
+
+  const handlePacienteChange = (selectedOption) => {
+    setFormData({
+      ...formData,
+      paciente: selectedOption ? selectedOption.value : ''
+    });
+  };
+
   return (
     <Container>
       <Row className="mb-4">
@@ -172,20 +192,18 @@ function ProcedimentoForm() {
               <Col md={6}>
                 <Form.Group className="mb-3">
                   <Form.Label>Paciente*</Form.Label>
-                  <Form.Select
+                  <Select
                     name="paciente"
-                    value={paciente}
-                    onChange={onChange}
-                    required
-                    disabled={pacienteIdFromQuery ? true : false}
-                  >
-                    <option value="">Selecione um paciente</option>
-                    {pacientes.map((p) => (
-                      <option key={p._id} value={p._id}>
-                        {p.nome}
-                      </option>
-                    ))}
-                  </Form.Select>
+                    value={filteredPacientes.find(option => option.value === paciente)}
+                    onChange={handlePacienteChange}
+                    options={filteredPacientes}
+                    isDisabled={pacienteIdFromQuery ? true : false}
+                    placeholder="Pesquisar paciente..."
+                    isClearable
+                    isSearchable
+                    noOptionsMessage={() => "Nenhum paciente encontrado"}
+                    classNamePrefix="select"
+                  />
                 </Form.Group>
               </Col>
             </Row>
