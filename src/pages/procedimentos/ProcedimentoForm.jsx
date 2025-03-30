@@ -145,12 +145,23 @@ function ProcedimentoForm() {
 
   useEffect(() => {
     if (pacientes && pacientes.length > 0) {
-      setFilteredPacientes(pacientes.map(p => ({
+      const pacientesOptions = pacientes.map(p => ({
         value: p._id,
         label: p.nome
-      })));
+      }));
+      setFilteredPacientes(pacientesOptions);      
+      
+      if (paciente && !pacientesOptions.some(option => option.value === paciente)) {
+        const selectedPaciente = pacientes.find(p => p._id === paciente);
+        if (selectedPaciente) {
+          setFilteredPacientes(prev => [
+            ...prev,
+            { value: selectedPaciente._id, label: selectedPaciente.nome }
+          ]);
+        }
+      }
     }
-  }, [pacientes]);
+  }, [pacientes, paciente]);
 
   const handlePacienteChange = (selectedOption) => {
     setFormData({
@@ -158,6 +169,8 @@ function ProcedimentoForm() {
       paciente: selectedOption ? selectedOption.value : ''
     });
   };
+  
+  const selectedPacienteOption = filteredPacientes.find(option => option.value === paciente) || null;
 
   return (
     <Container>
@@ -194,7 +207,7 @@ function ProcedimentoForm() {
                   <Form.Label>Paciente*</Form.Label>
                   <Select
                     name="paciente"
-                    value={filteredPacientes.find(option => option.value === paciente)}
+                    value={selectedPacienteOption}
                     onChange={handlePacienteChange}
                     options={filteredPacientes}
                     isDisabled={pacienteIdFromQuery ? true : false}
