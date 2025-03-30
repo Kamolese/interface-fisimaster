@@ -162,8 +162,21 @@ function ProcedimentoForm() {
       }
     }
   }, [pacientes, paciente]);
+  
+  useEffect(() => {
+    if (pacienteIdFromQuery && pacientes && pacientes.length > 0) {
+      const selectedPaciente = pacientes.find(p => p._id === pacienteIdFromQuery);
+      if (selectedPaciente) {
+        setFormData(prev => ({
+          ...prev,
+          paciente: pacienteIdFromQuery
+        }));
+      }
+    }
+  }, [pacienteIdFromQuery, pacientes]);
 
   const handlePacienteChange = (selectedOption) => {
+
     setFormData({
       ...formData,
       paciente: selectedOption ? selectedOption.value : ''
@@ -171,6 +184,18 @@ function ProcedimentoForm() {
   };
   
   const selectedPacienteOption = filteredPacientes.find(option => option.value === paciente) || null;
+  
+  useEffect(() => {
+    if (pacienteIdFromQuery && !paciente && pacientes && pacientes.length > 0) {
+      const selectedPaciente = pacientes.find(p => p._id === pacienteIdFromQuery);
+      if (selectedPaciente) {
+        setFormData(prev => ({
+          ...prev,
+          paciente: pacienteIdFromQuery
+        }));
+      }
+    }
+  }, [pacienteIdFromQuery, paciente, pacientes]);
 
   return (
     <Container>
@@ -209,7 +234,7 @@ function ProcedimentoForm() {
                     name="paciente"
                     value={selectedPacienteOption}
                     onChange={handlePacienteChange}
-                    options={filteredPacientes}
+                    options={filteredPacientes || []}
                     isDisabled={pacienteIdFromQuery ? true : false}
                     placeholder="Pesquisar paciente..."
                     isClearable
