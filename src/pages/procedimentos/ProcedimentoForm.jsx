@@ -33,6 +33,9 @@ function ProcedimentoForm() {
     valorPlano: '',
   });
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredPacientes, setFilteredPacientes] = useState([]);
+
   const { nome, descricao, paciente, dataRealizacao, evolucao, planoSaude, valorPlano } = formData;
 
   useEffect(() => {
@@ -140,9 +143,6 @@ function ProcedimentoForm() {
     );
   }
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredPacientes, setFilteredPacientes] = useState([]);
-
   useEffect(() => {
     if (pacientes && pacientes.length > 0) {
       const pacientesOptions = pacientes.map(p => ({
@@ -183,18 +183,6 @@ function ProcedimentoForm() {
   };
   
   const selectedPacienteOption = filteredPacientes.find(option => option.value === paciente) || null;
-  
-  useEffect(() => {
-    if (pacienteIdFromQuery && pacientes && pacientes.length > 0) {
-      const selectedPaciente = pacientes.find(p => p._id === pacienteIdFromQuery);
-      if (selectedPaciente) {
-        setFormData(prev => ({
-          ...prev,
-          paciente: pacienteIdFromQuery
-        }));
-      }
-    }
-  }, [pacienteIdFromQuery, pacientes]);
 
   return (
     <Container>
