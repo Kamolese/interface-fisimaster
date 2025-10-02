@@ -28,7 +28,10 @@ const login = async (userData) => {
 }
 
 const logout = () => {
+  // Limpeza completa do localStorage para evitar tokens corrompidos
   localStorage.removeItem('user')
+  localStorage.clear() // Limpa tudo para garantir que não há dados corrompidos
+  console.log('✅ localStorage limpo completamente no logout')
 }
 
 const getConfig = () => {
