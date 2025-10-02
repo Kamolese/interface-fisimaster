@@ -8,9 +8,37 @@ import { ptBR } from 'date-fns/locale';
 
 const getConfig = () => {
   const user = JSON.parse(localStorage.getItem('user'));
-  if (!user || !user.token) {
+  
+  // Verificações mais rigorosas
+  if (!user) {
+    console.error('❌ Usuário não encontrado no localStorage');
     throw new Error('Usuário não autenticado');
   }
+  
+  if (!user.token) {
+    console.error('❌ Token não encontrado no usuário');
+    throw new Error('Token não encontrado');
+  }
+  
+  // Verificar se o token tem o formato JWT correto (3 partes separadas por ponto)
+  const tokenParts = user.token.split('.');
+  if (tokenParts.length !== 3) {
+    console.error('❌ Token JWT malformado - partes:', tokenParts.length);
+    console.error('❌ Token:', user.token.substring(0, 50) + '...');
+    // Limpar localStorage e forçar novo login
+    localStorage.removeItem('user');
+    throw new Error('Token inválido - faça login novamente');
+  }
+  
+  // Verificar se as partes do token não estão vazias
+  if (!tokenParts[0] || !tokenParts[1] || !tokenParts[2]) {
+    console.error('❌ Token JWT com partes vazias');
+    localStorage.removeItem('user');
+    throw new Error('Token corrompido - faça login novamente');
+  }
+  
+  console.log('✅ Token válido encontrado:', user.token.substring(0, 20) + '...');
+  
   return {
     headers: {
       Authorization: `Bearer ${user.token}`,
