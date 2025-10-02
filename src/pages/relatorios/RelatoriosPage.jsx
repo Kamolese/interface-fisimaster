@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Form, Button, Spinner, Modal } from 'react-bootstrap';
-import { FaChartBar, FaUserInjured, FaNotesMedical, FaMoneyBillWave, FaFileAlt, FaEnvelope } from 'react-icons/fa';
+import { FaChartBar, FaUserInjured, FaNotesMedical, FaMoneyBillWave, FaFileAlt, FaEnvelope, FaDownload } from 'react-icons/fa';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { format } from 'date-fns';
@@ -18,6 +18,7 @@ const getConfig = () => {
 function RelatoriosPage() {
   const [loading, setLoading] = useState(true);
   const [sendingEmail, setSendingEmail] = useState(false);
+  const [downloadingPDF, setDownloadingPDF] = useState(false);
   const [showEmailModal, setShowEmailModal] = useState(false);
   const [emailAddress, setEmailAddress] = useState('');
   const [emailType, setEmailType] = useState('completo');
@@ -136,6 +137,46 @@ function RelatoriosPage() {
     }
   };
 
+  const handleDownloadPDF = async () => {
+    setDownloadingPDF(true);
+    try {
+      const { startDate, endDate } = dateRange;
+      
+      const response = await axios.get(
+        `/relatorios/download?startDate=${startDate}&endDate=${endDate}`,
+        {
+          ...getConfig(),
+          responseType: 'blob' // Importante para download de arquivos
+        }
+      );
+
+      // Criar URL do blob e fazer download
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      
+      // Nome do arquivo baseado no período
+      const fileName = `relatorio-${startDate}-${endDate}.pdf`;
+      link.setAttribute('download', fileName);
+      
+      // Adicionar ao DOM, clicar e remover
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Limpar URL do blob
+      window.URL.revokeObjectURL(url);
+      
+      toast.success('Relatório baixado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao baixar PDF:', error);
+      toast.error(error.response?.data?.message || 'Erro ao baixar o relatório em PDF');
+    } finally {
+      setDownloadingPDF(false);
+    }
+  };
+
   return (
     <div>
       <h1 className="page-header">Relatórios</h1>
@@ -192,14 +233,33 @@ function RelatoriosPage() {
                 <strong>De:</strong> {formatDate(relatorioData.periodoInicio)} <strong>até:</strong> {formatDate(relatorioData.periodoFim)}
               </p>
             </div>
-            <Button 
-              variant="success" 
-              onClick={handleOpenEmailModal}
-              disabled={loading}
-              className="d-flex align-items-center"
-            >
-              <FaEnvelope className="me-2" /> Enviar Por Email
-            </Button>
+            <div className="d-flex gap-2">
+              <Button 
+                variant="primary" 
+                onClick={handleDownloadPDF}
+                disabled={loading || downloadingPDF}
+                className="d-flex align-items-center"
+              >
+                {downloadingPDF ? (
+                  <>
+                    <Spinner animation="border" size="sm" className="me-2" />
+                    Baixando...
+                  </>
+                ) : (
+                  <>
+                    <FaDownload className="me-2" /> Baixar PDF
+                  </>
+                )}
+              </Button>
+              <Button 
+                variant="success" 
+                onClick={handleOpenEmailModal}
+                disabled={loading}
+                className="d-flex align-items-center"
+              >
+                <FaEnvelope className="me-2" /> Enviar Por Email
+              </Button>
+            </div>
           </div>
 
           <h3 className="section-title mb-3">Visão Geral</h3>
