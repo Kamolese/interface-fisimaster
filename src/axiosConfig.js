@@ -6,7 +6,8 @@ axios.defaults.baseURL = apiUrl + '/api';
 
 axios.defaults.withCredentials = false;
 
-axios.defaults.timeout = 30000;
+// Aumentar timeout para 2 minutos (120000ms) para operações que podem demorar mais
+axios.defaults.timeout = 120000;
 
 axios.interceptors.request.use(request => {
   console.log('Starting Request', request);
