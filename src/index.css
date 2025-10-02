@@ -97,3 +97,176 @@ body {
   color: #000000;
   margin: 0;
 }
+
+/* Responsividade - Media Queries */
+
+/* Tablets e telas médias */
+@media (max-width: 992px) {
+  .container {
+    padding: 0 10px;
+  }
+  
+  .dashboard-stats {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+  }
+  
+  .stat-card {
+    padding: 15px;
+  }
+  
+  .stat-card h3 {
+    font-size: 1.3rem;
+  }
+  
+  .stat-card p {
+    font-size: 1.7rem;
+  }
+  
+  .section-title {
+    font-size: 1.3rem;
+  }
+}
+
+/* Smartphones e telas pequenas */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 8px;
+  }
+  
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  
+  .stat-card {
+    padding: 12px;
+    text-align: center;
+  }
+  
+  .stat-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  
+  .stat-card p {
+    font-size: 1.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.2rem;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .page-header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+  }
+  
+  .card {
+    margin-bottom: 15px;
+  }
+  
+  /* Melhorar botões em mobile */
+  .btn {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+  
+  .btn-sm {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+}
+
+/* Telas muito pequenas */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 5px;
+  }
+  
+  .stat-card {
+    padding: 10px;
+  }
+  
+  .stat-card h3 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  
+  .stat-card p {
+    font-size: 1.3rem;
+  }
+  
+  .section-title {
+    font-size: 1.1rem;
+    margin-top: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .btn {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    width: 100%;
+    margin-top: 8px;
+  }
+  
+  .btn-sm {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+}
+
+/* Melhorias para tabelas responsivas */
+@media (max-width: 768px) {
+  .table-responsive {
+    font-size: 0.9rem;
+  }
+  
+  .table th,
+  .table td {
+    padding: 8px 4px;
+    white-space: nowrap;
+  }
+  
+  /* Esconder colunas menos importantes em mobile */
+  .table .d-none-mobile {
+    display: none;
+  }
+  
+  /* Melhorar botões em tabelas mobile */
+  .table .btn-sm {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    margin: 2px;
+  }
+}
+
+/* Utilitários responsivos customizados */
+@media (min-width: 768px) {
+  .w-md-auto {
+    width: auto !important;
+  }
+  
+  .text-md-end {
+    text-align: right !important;
+  }
+}
+
+/* Navbar responsiva */
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.1rem;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 8px 12px;
+    text-align: center;
+  }
+  
+  .navbar-collapse {
+    margin-top: 10px;
+  }
+}
