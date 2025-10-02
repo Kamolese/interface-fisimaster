@@ -8,6 +8,9 @@ import { ptBR } from 'date-fns/locale';
 
 const getConfig = () => {
   const user = JSON.parse(localStorage.getItem('user'));
+  if (!user || !user.token) {
+    throw new Error('Usuário não autenticado');
+  }
   return {
     headers: {
       Authorization: `Bearer ${user.token}`,
@@ -142,6 +145,9 @@ function RelatoriosPage() {
     try {
       const { startDate, endDate } = dateRange;
       
+      console.log('Iniciando download do PDF...');
+      console.log('Período:', startDate, 'até', endDate);
+      
       const response = await axios.get(
         `/relatorios/download?startDate=${startDate}&endDate=${endDate}`,
         {
@@ -149,6 +155,8 @@ function RelatoriosPage() {
           responseType: 'blob' // Importante para download de arquivos
         }
       );
+
+      console.log('Resposta recebida:', response);
 
       // Criar URL do blob e fazer download
       const blob = new Blob([response.data], { type: 'application/pdf' });
@@ -171,7 +179,17 @@ function RelatoriosPage() {
       toast.success('Relatório baixado com sucesso!');
     } catch (error) {
       console.error('Erro ao baixar PDF:', error);
-      toast.error(error.response?.data?.message || 'Erro ao baixar o relatório em PDF');
+      
+      if (error.message === 'Usuário não autenticado') {
+        toast.error('Sessão expirada. Faça login novamente.');
+        // Redirecionar para login se necessário
+        window.location.href = '/login';
+      } else if (error.response?.status === 401) {
+        toast.error('Não autorizado. Faça login novamente.');
+        window.location.href = '/login';
+      } else {
+        toast.error(error.response?.data?.message || 'Erro ao baixar o relatório em PDF');
+      }
     } finally {
       setDownloadingPDF(false);
     }
