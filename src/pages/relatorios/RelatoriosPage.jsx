@@ -12,12 +12,15 @@ const getConfig = () => {
   // Verificações mais rigorosas
   if (!user) {
     console.error('❌ Usuário não encontrado no localStorage');
-    throw new Error('Usuário não autenticado');
+    // Limpar completamente o localStorage em caso de dados corrompidos
+    localStorage.clear();
+    throw new Error('Usuário não autenticado - faça login novamente');
   }
   
   if (!user.token) {
     console.error('❌ Token não encontrado no usuário');
-    throw new Error('Token não encontrado');
+    localStorage.clear();
+    throw new Error('Token não encontrado - faça login novamente');
   }
   
   // Verificar se o token tem o formato JWT correto (3 partes separadas por ponto)
@@ -26,14 +29,14 @@ const getConfig = () => {
     console.error('❌ Token JWT malformado - partes:', tokenParts.length);
     console.error('❌ Token:', user.token.substring(0, 50) + '...');
     // Limpar localStorage e forçar novo login
-    localStorage.removeItem('user');
+    localStorage.clear();
     throw new Error('Token inválido - faça login novamente');
   }
   
   // Verificar se as partes do token não estão vazias
   if (!tokenParts[0] || !tokenParts[1] || !tokenParts[2]) {
     console.error('❌ Token JWT com partes vazias');
-    localStorage.removeItem('user');
+    localStorage.clear();
     throw new Error('Token corrompido - faça login novamente');
   }
   
@@ -169,47 +172,59 @@ function RelatoriosPage() {
   };
 
   const handleDownloadPDF = async () => {
-    setDownloadingPDF(true);
     try {
-      const { startDate, endDate } = dateRange;
+      setDownloadingPDF(true);
+      console.log('🔄 Iniciando download do PDF...');
       
-      console.log('Iniciando download do PDF...');
-      console.log('Período:', startDate, 'até', endDate);
+      const config = getConfig();
+      console.log('✅ Configuração obtida com sucesso');
       
-      const response = await axios.get(
-        `/relatorios/download?startDate=${startDate}&endDate=${endDate}`,
-        {
-          ...getConfig(),
-          responseType: 'blob' // Importante para download de arquivos
+      console.log('📡 Fazendo requisição para:', `/relatorios/download?startDate=${dateRange.startDate}&endDate=${dateRange.endDate}`);
+      
+      // Fazer requisição com timeout específico para download de PDF
+      const response = await axios.get(`/relatorios/download`, {
+        params: {
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
+        },
+        ...config,
+        responseType: 'blob',
+        timeout: 180000, // 3 minutos específico para esta requisição
+        onDownloadProgress: (progressEvent) => {
+          if (progressEvent.lengthComputable) {
+            const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            console.log(`📥 Download progress: ${percentCompleted}%`);
+          }
         }
-      );
+      });
 
-      console.log('Resposta recebida:', response);
+      console.log('✅ Resposta recebida, tamanho:', response.data.size);
 
-      // Criar URL do blob e fazer download
+      // Criar blob e link para download
       const blob = new Blob([response.data], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
       
-      // Nome do arquivo baseado no período
-      const fileName = `relatorio-${startDate}-${endDate}.pdf`;
+      // Nome do arquivo com data
+      const fileName = `relatorio_${dateRange.startDate}_${dateRange.endDate}.pdf`;
       link.setAttribute('download', fileName);
       
-      // Adicionar ao DOM, clicar e remover
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
-      // Limpar URL do blob
       window.URL.revokeObjectURL(url);
-      
+
+      console.log('✅ Download concluído:', fileName);
       toast.success('Relatório baixado com sucesso!');
-    } catch (error) {
-      console.error('Erro ao baixar PDF:', error);
       
-      if (error.message === 'Usuário não autenticado') {
-        toast.error('Sessão expirada. Faça login novamente.');
+    } catch (error) {
+      console.error('❌ Erro no download:', error);
+      
+      if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
+        toast.error('Timeout: A geração do PDF está demorando mais que o esperado. Tente novamente.');
+      } else if (error.response?.status === 401) {
+        console.error('❌ Erro de autenticação');
         // Redirecionar para login se necessário
         window.location.href = '/login';
       } else if (error.response?.status === 401) {
